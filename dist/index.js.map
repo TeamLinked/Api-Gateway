@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/index.js"],"names":["app","listen","console","log"],"mappings":";;AAAA;;;;AACA,IAAMA,GAAG,GAAG,0BAAZ;AACAA,GAAG,CAACC,MAAJ,CAAW,IAAX,EAAgB;AAAA,SAAKC,OAAO,CAACC,GAAR,CAAY,qBAAZ,CAAL;AAAA,CAAhB","sourcesContent":["import express from \"express\";\nconst app = express();\napp.listen(3050,()=> console.log('Server on port 3050'));"],"file":"index.js"}
