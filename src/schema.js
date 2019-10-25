@@ -5,12 +5,15 @@ import {resolvers} from "./resolvers";
 const typeDefs=`
     type Query{
         getUsuarios:[Usuario]
-        getOrgUsuario(id:Int):[String]
+        getUsuario(id: Int):user
+        getOrgUsuario(id:Int):Organizacion
+        getOrganizaciones:[Organizacion]
 
 
 
         
-        Publicaciones:pub
+        Foros:[Foro]
+        findForo(id:Int):Foro
 
 
         Messages: [Message]
@@ -28,10 +31,17 @@ const typeDefs=`
         RelacionU(id:String):[Relacion]
     }
     type Mutation{
+        inputForo(body: inputForo):Foro
+        editForo(id: Int, body:inputForo):Foro
+        delForo(id: Int):String
+
         putUsuario(body:inputUsuario):Usuario
         delUsuario(id:Int):Usuario
         actUsuario(id:Int, body:inputUsuario):Usuario
 
+        putOrganizacion(body: inputOrganizacion):Organizacion
+        actOrganizacion(id:Int, body: inputOrganizacion):Organizacion
+        delOrganizacion(id:Int): org
 
 
 
@@ -53,6 +63,33 @@ const typeDefs=`
         deleteRelacion(id:String):Relacion
     }
 
+    type org{
+        message: String
+    }
+
+    input inputOrganizacion{
+        id: Int
+        nombre: String
+        descripcion: String
+        id_usuario_admin: Int
+    }
+
+    type Organizacion{
+        id: Int
+        nombre: String
+        descripcion: String
+        id_usuario_admin: Int
+    }
+
+    input inputForo{
+            id: Int
+            titulo: String
+            contenido: String
+            categoria: String
+            fecha_creacion: String
+            imagen: String
+    }
+
     type organizacion{
         id: Int
         nombre:String
@@ -72,7 +109,9 @@ const typeDefs=`
         perf_personal:String,
     }
 
-
+    type user{
+        user:Usuario
+    }
     type Usuario{
         id:Int,
         nombre:String,
@@ -88,21 +127,14 @@ const typeDefs=`
         updatedAt:String
     }
 
-    type pub{
-            data:data
 
-    }
-    type data{
-        Publicaciones:[Publicacion]
-    }
-
-
-    type Publicacion{
+    type Foro{
         id: ID,
         titulo: String,
         contenido: String,
         categoria: String,
-        fechaCreacion: String
+        fechaCreacion: String,
+        imagen:String
     }
 
     input InputMessage{

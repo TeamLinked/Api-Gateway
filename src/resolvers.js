@@ -1,95 +1,102 @@
 //CONTROLADORES
 import graphqlHTTP from "express-graphql";
 import request from 'request-promise-native';
-import axios from "axios";
-import fetch from 'node-fetch';
 import { generalRequest, getRequest } from './utilities';
 import { applyResultTransforms } from "graphql-tools/dist/transforms/transforms";
 
-const query = 'query{publicaciones{id titulo categoria fechaCreacion} }';
-
-const opts = {
-    method: "POST",
-    headers: {
-        'Accept': 'application/json',
-    'Content-Type': 'application/json'
-},
-    body: JSON.stringify({ query })
-  };
-const hola= () => generalRequest(`http://35.198.21.214:8000/graphql/`,'POST',{"query":"query{publicaciones{id titulo categoria fechaCreacion} }"});
-console.log(hola);
 export const resolvers={
     Query:{
         //Microservicio de usuarios
-        getUsuarios: () => getRequest('http://35.198.21.214:4000/api/usuarios',''),
+        getUsuarios: () => getRequest('http://34.94.59.230:4000/api/usuarios',''),
 
-        getOrgUsuario: (id) => generalRequest(`http://35.198.21.214:4000/api/organizacions/${id}`,''),
+        getOrgUsuario: (_,{id}) => generalRequest(`http://34.94.59.230:4000/api/organizaciones/${id}`,''),
 
-        
+        getUsuario: (_,{id}) => generalRequest(`http://34.94.59.230:4000/api/usuario/${id}`,''),
+
+        getOrganizaciones: () => getRequest(`http://34.94.59.230:4000/api/organizaciones`,''),
+
         //Microservicio Foros
 
-        Publicaciones:() => generalRequest(`http://35.198.21.214:8000/graphql/`,'POST',{"query":"query{publicaciones{id titulo categoria fechaCreacion} }"}),
+        Foros:() => generalRequest(`http://34.94.59.230:8000/foros/`,'GET'),
+
+        findForo:(_,{id}) =>
+        generalRequest(`http://34.94.59.230:8000/foros/${id}`, 'GET'),
 
         //Microservicio Chats
-        Messages: () => getRequest('http://35.198.21.214:3020',''),
+        Messages: () => getRequest('http://34.94.59.230:3020',''),
 
         FindMessajes:(_,{id1,id2}) =>
-        generalRequest(`http://35.198.21.214:3020/find/${id1}/${id2}`, 'GET'),
+        generalRequest(`http://34.94.59.230:3020/find/${id1}/${id2}`, 'GET'),
 
 
         //microservicio de MiREd
-        Relaciones: () => getRequest('http://35.198.21.214:3010',''),
+        Relaciones: () => getRequest('http://34.94.59.230:3010',''),
 
-        RelacionU:(_,{id})=> generalRequest(`http://35.198.21.214:3010/edit/${id}`,'GET')
+        RelacionU:(_,{id})=> generalRequest(`http://34.94.59.230:3010/edit/${id}`,'GET')
         
     },
     Mutation:{  
+        //Microservicio de foros
+        inputForo:(_,{body}) =>
+        generalRequest(`http://34.94.59.230:8000/foros/`,'POST',body),
+
+        editForo:(_,{id,body}) =>
+        generalRequest(`http://34.94.59.230:8000/foros/${id}`,'PUT',body),
+
+        delForo:(_,{id}) =>
+        generalRequest(`http://34.94.59.230:8000/foros/${id}`,'DELETE'),
+
+        
+
        
         //microservicio de Usuarios
 
         putUsuario:(_,{body}) =>
-        generalRequest(`http://35.198.21.214:4000/api/usuarios/`, 'POST',body),
+        generalRequest(`http://34.94.59.230:4000/api/usuarios/`, 'POST',body),
 
 
 
         delUsuario:(_,{id}) =>
-        generalRequest(`http://35.198.21.214:4000/api/usuarios/${id}`, 'DELETE'),
+        generalRequest(`http://34.94.59.230:4000/api/usuarios/${id}`, 'DELETE'),
 
 
         actUsuario:(_,{id,body}) =>
-        generalRequest(`http://35.198.21.214:4000/api/usuarios/${id}`, 'PUT', body),
+        generalRequest(`http://34.94.59.230:4000/api/usuarios/${id}`, 'PUT', body),
 
 
+        putOrganizacion: (_,{body}) => generalRequest(`http://34.94.59.230:4000/api/organizaciones`,'POST',body),
+        actOrganizacion: (_,{id,body}) => generalRequest(`http://34.94.59.230:4000/api/organizaciones/${id}`,'PUT',body),
+        delOrganizacion: (_,{id}) => generalRequest(`http://34.94.59.230:4000/api/organizaciones/${id}`,'DELETE'),
 
         //microservicio de chats
 
         SendMessage:(_,{input}) =>
-        generalRequest(`http://35.198.21.214:3020/add`, 'POST', input),
+        generalRequest(`http://34.94.59.230:3020/add`, 'POST', input),
 
         deleteMensaje:(_,{idmensaje}) =>
-        generalRequest(`http://35.198.21.214:3020/deletemess/${idmensaje}`, 'DELETE'),
+        generalRequest(`http://34.94.59.230:3020/deletemess/${idmensaje}`, 'DELETE'),
 
         deleteMensajes:(_,{id1,id2}) =>
-        generalRequest(`http://35.198.21.214:3020/delete/${id1}/${id2}`, 'DELETE'),
+        generalRequest(`http://34.94.59.230:3020/delete/${id1}/${id2}`, 'DELETE'),
 
          //microservicio de MiREd
         InRelacion:(_,{input}) =>
-        generalRequest(`http://35.198.21.214:3010/add`, 'POST', input),
+        generalRequest(`http://34.94.59.230:3010/add`, 'POST', input),
         
         addfriend:(_,{id1,id2}) =>
-        generalRequest(`http://35.198.21.214:3010/addfriend/${id1}/${id2}`, 'POST'),
+        generalRequest(`http://34.94.59.230:3010/addfriend/${id1}/${id2}`, 'POST'),
 
         addReq:(_,{id1,id2}) =>
-        generalRequest(`http://35.198.21.214:3010/addReq/${id1}/${id2}`, 'POST'),
+        generalRequest(`http://34.94.59.230:3010/addReq/${id1}/${id2}`, 'POST'),
 
         delfriend:(_,{id1,id2}) =>
-        generalRequest(`http://35.198.21.214:3010/delfriend/${id1}/${id2}`, 'POST'),
+        generalRequest(`http://34.94.59.230:3010/delfriend/${id1}/${id2}`, 'POST'),
 
         delReq:(_,{id1,id2}) =>
-        generalRequest(`http://35.198.21.214:3010/delReq/${id1}/${id2}`, 'POST'),
+        generalRequest(`http://34.94.59.230:3010/delReq/${id1}/${id2}`, 'POST'),
 
         deleteRelacion:(_,{id}) =>
-        generalRequest(`http://35.198.21.214:3010/delete/${id}`, 'DELETE')
+        generalRequest(`http://34.94.59.230:3010/delete/${id}`, 'DELETE')
 
 
 
