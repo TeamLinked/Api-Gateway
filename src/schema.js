@@ -4,8 +4,23 @@ import {resolvers} from "./resolvers";
 //RUTAS DEL SERVIDOR
 const typeDefs=`
     type Query{
+
+        Login(body: inputLogin):resLogin
+
+        getEmpleos:[Empleo]
+        getUsuariosEmpleo:[UsuarioEmpleo]
+        getCategorias:[Categoria]
+        getPostulaciones:[Postulacion]
+        getClasEmpleo:[ClasEmpleo]
+
+
+
+
+
+
         getUsuarios:[Usuario]
         getUsuario(id: Int):user
+        getUsuarioByEmail(body: inputUsuarioByEmail):user
         getOrgUsuario(id:Int):Organizacion
         getOrganizaciones:[Organizacion]
 
@@ -31,6 +46,31 @@ const typeDefs=`
         RelacionU(id:String):[Relacion]
     }
     type Mutation{
+
+        Register(body: inputRegister):resRegister
+        DeleteUser(body: inputDelUser):String
+
+
+        inputEmpleo(body: InputEmpleo):Empleo
+        inputUsuarioEmpleo(body:InputUsuarioEmpleo):UsuarioEmpleo
+        inputCategoria(body:InputCategoria): Categoria
+        inputPostulacion(body:InputPostulacion):Postulacion
+        inputClasEmpleo(body:InputClasEmpleo):ClasEmpleo
+
+
+        editEmpleo(id:Int,body:InputEmpleo): Empleo
+        editCategoria(id:Int, body:InputCategoria):Categoria
+        editClasEmpleo(id:Int, body:InputClasEmpleo):ClasEmpleo
+
+
+        delUsuarioEm(id: String):String
+        delEmpleo(id: Int):String
+        delCategoria(id: Int):String
+        delPostulacion(id: Int):String
+        delClasEmpleo(id: Int):String
+
+
+
         inputForo(body: inputForo):Foro
         editForo(id: Int, body:inputForo):Foro
         delForo(id: Int):String
@@ -63,6 +103,36 @@ const typeDefs=`
         deleteRelacion(id:String):Relacion
     }
 
+    input inputUsuarioByEmail{
+        email: String
+    }
+
+    type resRegister{
+        answer: String
+    }
+
+    type resLogin{
+        token: String
+    }
+
+    input inputRegister{
+        cn: String,
+        sn: String,
+        givenName: String,
+        objectclass: String,
+        userPassword: String
+    }
+
+    input inputLogin{
+        username:String,
+        password:String
+    }
+
+    input inputDelUser{
+        user:String
+    }
+
+
     type org{
         message: String
     }
@@ -86,7 +156,6 @@ const typeDefs=`
             titulo: String
             contenido: String
             categoria: String
-            fecha_creacion: String
             imagen: String
     }
 
@@ -133,7 +202,7 @@ const typeDefs=`
         titulo: String,
         contenido: String,
         categoria: String,
-        fechaCreacion: String,
+        fecha_creacion: String,
         imagen:String
     }
 
@@ -159,6 +228,63 @@ const typeDefs=`
         message: String,
         date: String,
         _v: Int
+    }
+
+    input InputEmpleo{
+        titulo: String,
+        descripcion: String,
+        fechaVencimiento:String,
+        id_ofertante:String
+    }
+
+
+    type Empleo{
+        id: Int,
+        titulo: String,
+        descripcion: String,
+        fechaPublicacion:String,
+        fechaVencimiento:String,
+        id_ofertante:String
+    }
+
+    type UsuarioEmpleo{
+        id_usuario:String
+    }
+
+    input InputUsuarioEmpleo{
+        id_usuario:String
+    }
+
+    type Categoria{
+        id: Int,
+        nombre: String
+    }
+
+    input InputCategoria{
+        nombre: String
+    }
+
+    type ClasEmpleo{
+        id: Int
+        id_categoria: Int
+        id_empleo: Int
+    }
+
+    input InputClasEmpleo{
+        id_categoria: Int
+        id_empleo: Int
+    }
+
+    type Postulacion{
+        id: Int
+        fechaAplicacion: String
+        id_postulante: String
+        id_empleo: Int
+    }
+
+    input InputPostulacion{
+        id_postulante: String
+        id_empleo: Int
     }
 
     type Relacion{

@@ -6,8 +6,27 @@ import { applyResultTransforms } from "graphql-tools/dist/transforms/transforms"
 
 export const resolvers={
     Query:{
+
+        Login:(_,{body}) =>
+        generalRequest(`http://34.94.59.230:8086/login`,'POST',body),
+
+        //Microservicio de Empleos
+        getEmpleos: () => getRequest('http://34.94.59.230:8001/empleos',''),
+
+        getUsuariosEmpleo: () => getRequest('http://34.94.59.230:8001/usuarios',''),
+
+        getCategorias: () => getRequest('http://34.94.59.230:8001/categorias',''),
+
+        getPostulaciones: () => getRequest('http://34.94.59.230:8001/postulaciones',''),
+
+        getClasEmpleo: () => getRequest('http://34.94.59.230:8001/clasificacionempleos',''),
+
+
         //Microservicio de usuarios
         getUsuarios: () => getRequest('http://34.94.59.230:4000/api/usuarios',''),
+
+        getUsuarioByEmail:(_,{body}) =>
+        generalRequest(`http://34.94.59.230:4000/api/usuarioByMail`,'GET',body),
 
         getOrgUsuario: (_,{id}) => generalRequest(`http://34.94.59.230:4000/api/organizaciones/${id}`,''),
 
@@ -36,6 +55,61 @@ export const resolvers={
         
     },
     Mutation:{  
+        //Microservicio de Empleos
+        Register:(_,{body}) =>
+        generalRequest(`http://34.94.59.230:8086/add`,'POST',body),
+
+        DeleteUser:(_,{body}) =>
+        generalRequest(`http://34.94.59.230:8086/delete`,'DELETE',body),
+
+
+        inputEmpleo:(_,{body}) =>
+        generalRequest(`http://34.94.59.230:8001/empleos/`,'POST',body),
+
+        inputUsuarioEmpleo:(_,{body}) =>
+        generalRequest(`http://34.94.59.230:8001/usuarios/`,'POST',body),
+
+        inputCategoria:(_,{body}) =>
+        generalRequest(`http://34.94.59.230:8001/categorias/`,'POST',body),
+
+        inputPostulacion:(_,{body}) =>
+        generalRequest(`http://34.94.59.230:8001/postulaciones/`,'POST',body),
+
+        inputClasEmpleo:(_,{body}) =>
+        generalRequest(`http://34.94.59.230:8001/clasificacionempleos/`,'POST',body),
+
+
+
+        editEmpleo:(_,{id,body}) =>
+        generalRequest(`http://34.94.59.230:8001/empleos/${id}`,'PUT',body),
+
+        editCategoria:(_,{id,body}) =>
+        generalRequest(`http://34.94.59.230:8001/categorias/${id}`,'PUT',body),
+
+        editClasEmpleo:(_,{id,body}) =>
+        generalRequest(`http://34.94.59.230:8001/clasificacionempleos/${id}`,'PUT',body),
+
+
+
+        delUsuarioEm:(_,{id}) =>
+        generalRequest(`http://34.94.59.230:8001/usuarios/${id}`,'DELETE'),
+
+        delEmpleo:(_,{id}) =>
+        generalRequest(`http://34.94.59.230:8001/empleos/${id}`,'DELETE'),
+
+        delCategoria:(_,{id}) =>
+        generalRequest(`http://34.94.59.230:8001/categorias/${id}`,'DELETE'),
+
+        delPostulacion:(_,{id}) =>
+        generalRequest(`http://34.94.59.230:8001/postulaciones/${id}`,'DELETE'),
+
+        delClasEmpleo:(_,{id}) =>
+        generalRequest(`http://34.94.59.230:8001/clasificacionempleos/${id}`,'DELETE'),
+
+
+
+
+
         //Microservicio de foros
         inputForo:(_,{body}) =>
         generalRequest(`http://34.94.59.230:8000/foros/`,'POST',body),
