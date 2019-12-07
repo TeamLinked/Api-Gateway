@@ -5,6 +5,8 @@ import {resolvers} from "./resolvers";
 const typeDefs=`
     type Query{
 
+        valtoken(header: inputToken):String
+
         Login(body: inputLogin):resLogin
 
         getEmpleos:[Empleo]
@@ -28,7 +30,10 @@ const typeDefs=`
 
         
         Foros:[Foro]
+        
         findForo(id:Int):Foro
+
+        findForoCreador(creador:Int):[Foro]
 
 
         Messages: [Message]
@@ -72,12 +77,19 @@ const typeDefs=`
 
 
         inputForo(body: inputForo):Foro
+        inputCategoriaForo(body: inputCategoria): categoriaForo
+        inputForoCal(body: inputForoCal): foroCal
+        inputComentarioForos(body: inputComentarioForo):comentarioForo
         editForo(id: Int, body:inputForo):Foro
         delForo(id: Int):String
 
         putUsuario(body:inputUsuario):Usuario
         delUsuario(id:Int):Usuario
         actUsuario(id:Int, body:inputUsuario):Usuario
+        inputUsuarioTag(id:String,body: inputTag): Tag
+        delUsuarioTag(id: String):String
+        inputOrganizaciones(id:String, body: inputTag): usuariosOrg
+        delUsuarioOrg(id: String): String
 
         putOrganizacion(body: inputOrganizacion):Organizacion
         actOrganizacion(id:Int, body: inputOrganizacion):Organizacion
@@ -101,6 +113,15 @@ const typeDefs=`
         delfriend(id1:String,id2:String):Relacion
         delReq(id1:String,id2:String):Relacion
         deleteRelacion(id:String):Relacion
+    }
+    
+    input inputCategoria{
+        nombre: String
+    }
+
+    type categoriaForo{
+        id: Int,
+        nombre: String
     }
 
     input inputUsuarioByEmail{
@@ -132,6 +153,10 @@ const typeDefs=`
         user:String
     }
 
+    input inputToken{
+        token: String
+    }
+
 
     type org{
         message: String
@@ -152,7 +177,7 @@ const typeDefs=`
     }
 
     input inputForo{
-            id: Int
+            id_creador: Int
             titulo: String
             contenido: String
             categoria: String
@@ -166,6 +191,14 @@ const typeDefs=`
         descripcion: String
         usuarios:Usuario
     }
+
+    type usuariosOrg{
+        usuarioId: Int
+        organizacionId: Int
+        createdAt: String
+        updatedAt: String
+    }
+
     input inputUsuario{
         nombre:String,
         apellido:String,
@@ -181,6 +214,7 @@ const typeDefs=`
     type user{
         user:Usuario
     }
+
     type Usuario{
         id:Int,
         nombre:String,
@@ -188,22 +222,58 @@ const typeDefs=`
         email:String,
         password:String,
         identificacion:String,
+        image: String,
         nacionalidad:String,
         fecha_nac:String,
         perf_profesional:String,
         perf_personal:String,
         createdAt:String,
         updatedAt:String
+        organizacions: [organizacions]
+        usuarioTags: [usuarioTags]
+        
+    }
+    type organizacions{
+        id: Int
+        nombre: String
+        id_usuario_admin: Int
+        descripcion: String
+        createdAt:String
+        updatedAt:String
+        usuario_organizacion: usuario_organizacion
+    }
+
+    type usuario_organizacion{
+        createdAt:String,
+        updatedAt:String
+        organizacionId: Int
+        usuarioId: Int
+    }
+
+    type usuarioTags{
+        id: Int
+        nombre: String
+        createdAt:String
+        updatedAt:String
+        tag_usuario: tag_usuario
+    }
+
+    type tag_usuario{
+        createdAt:String
+        updatedAt:String
+        tagId: Int
+        usuarioId: Int
     }
 
 
     type Foro{
-        id: ID,
-        titulo: String,
-        contenido: String,
-        categoria: String,
-        fecha_creacion: String,
+        id: Int
+        titulo: String
+        contenido: String
+        categoria: String
+        fecha_creacion: String
         imagen:String
+        id_creador: Int
     }
 
     input InputMessage{
@@ -262,6 +332,42 @@ const typeDefs=`
 
     input InputCategoria{
         nombre: String
+    }
+
+    type foroCal{
+        id: Int
+        id_categoria: Int
+        id_foro: Int
+    }
+
+    input inputForoCal{
+        id_categoria: Int
+        id_foro: Int
+    }
+
+    input inputComentarioForo{
+        id_participante: Int
+        id_foro: Int
+        comentario: String
+    }
+
+    type comentarioForo{
+        id: Int
+        comentario: String
+        fecha_creacion: String
+        id_participante: Int
+        id_foro: Int
+    }
+
+    type Tag{
+        usuarioId: Int
+        tagId: Int
+        createdAt: String
+        updatedAt: String
+    }
+
+    input inputTag{
+        id: Int
     }
 
     type ClasEmpleo{

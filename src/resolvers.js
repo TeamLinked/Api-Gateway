@@ -4,8 +4,14 @@ import request from 'request-promise-native';
 import { generalRequest, getRequest } from './utilities';
 import { applyResultTransforms } from "graphql-tools/dist/transforms/transforms";
 
+
+
+
 export const resolvers={
     Query:{
+
+        valtoken:(_,{body}) =>
+        generalRequest(`http://localhost:8086/valtoken`,'POST',body),
 
         Login:(_,{body}) =>
         generalRequest(`http://34.94.59.230:8086/login`,'POST',body),
@@ -38,8 +44,13 @@ export const resolvers={
 
         Foros:() => generalRequest(`http://34.94.59.230:8000/foros/`,'GET'),
 
+       
+
         findForo:(_,{id}) =>
         generalRequest(`http://34.94.59.230:8000/foros/${id}`, 'GET'),
+
+        findForoCreador:(_,{creador}) =>
+        generalRequest(`http://34.94.59.230:8000/foros/?id_creador=${creador}`, 'GET'),
 
         //Microservicio Chats
         Messages: () => getRequest('http://34.94.59.230:3020',''),
@@ -120,7 +131,14 @@ export const resolvers={
         delForo:(_,{id}) =>
         generalRequest(`http://34.94.59.230:8000/foros/${id}`,'DELETE'),
 
-        
+        inputCategoriaForo:(_,{body}) =>
+        generalRequest(`http://34.94.59.230:8000/categorias/`,'POST',body),
+
+        inputForoCal:(_,{body}) =>
+        generalRequest(`http://34.94.59.230:8000/calificacionforos/`,'POST',body),
+
+        inputComentarioForos:(_,{body}) =>
+        generalRequest(`http://34.94.59.230:8000/comentarios/`,'POST',body),
 
        
         //microservicio de Usuarios
@@ -142,6 +160,19 @@ export const resolvers={
         actOrganizacion: (_,{id,body}) => generalRequest(`http://34.94.59.230:4000/api/organizaciones/${id}`,'PUT',body),
         delOrganizacion: (_,{id}) => generalRequest(`http://34.94.59.230:4000/api/organizaciones/${id}`,'DELETE'),
 
+        inputUsuarioTag:(_,{id,body}) =>
+        generalRequest(`http://34.94.59.230:4000/api/usuario/tags/${id}`, 'POST', body),
+
+        delUsuarioTag:(_,{id}) =>
+        generalRequest(`http://34.94.59.230:4000/api/usuario/tags/${id}`, 'DELETE'),
+
+        inputOrganizaciones:(_,{id,body}) =>
+        generalRequest(`http://34.94.59.230:4000/api/usuario/organizaciones/${id}`, 'POST', body),
+
+        delUsuarioOrg:(_,{id}) =>
+        generalRequest(`http://34.94.59.230:4000/api/usuario/organizaciones/${id}`, 'DELETE'),
+
+        
         //microservicio de chats
 
         SendMessage:(_,{input}) =>
