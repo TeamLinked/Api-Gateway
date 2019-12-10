@@ -27,6 +27,14 @@ export const resolvers={
 
         getClasEmpleo: () => getRequest('http://34.94.59.230:8001/clasificacionempleos',''),
 
+        getMisEmpleosPublicados: (_,{ofertante_id}) => getRequest(`http://34.94.59.230:8001/empleos/?id_ofertante=${ofertante_id}`),
+
+        getMisEmpleosAplicados: (_,{postulante_id}) => getRequest(`http://34.94.59.230:8001/verpostulaciones/?id_postulante=${postulante_id}`),
+
+        getEmpleosByCategoria: (_,{nombre_categoria}) => getRequest(`http://34.94.59.230:8001/empleos/?categoria=${nombre_categoria}`),
+
+        getEmpleo: (_,{id}) => getRequest(`http://34.94.59.230:8001/empleos/${id}`),
+
 
         //Microservicio de usuarios
         getUsuarios: () => getRequest('http://34.94.59.230:4000/api/usuarios',''),
@@ -44,8 +52,6 @@ export const resolvers={
 
         Foros:() => generalRequest(`http://34.94.59.230:8000/foros/`,'GET'),
 
-       
-
         findForo:(_,{id}) =>
         generalRequest(`http://34.94.59.230:8000/foros/${id}`, 'GET'),
 
@@ -58,21 +64,20 @@ export const resolvers={
         FindMessajes:(_,{id1,id2}) =>
         generalRequest(`http://34.94.59.230:3020/find/${id1}/${id2}`, 'GET'),
 
-
         //microservicio de MiREd
         Relaciones: () => getRequest('http://34.94.59.230:3010',''),
 
-        RelacionU:(_,{id})=> generalRequest(`http://34.94.59.230:3010/edit/${id}`,'GET')
-        
+        RelacionU:(_,{id})=> generalRequest(`http://34.94.59.230:3010/edit/${id}`,'GET')        
     },
     Mutation:{  
-        //Microservicio de Empleos
+        
         Register:(_,{body}) =>
         generalRequest(`http://34.94.59.230:8086/add`,'POST',body),
 
         DeleteUser:(_,{body}) =>
         generalRequest(`http://34.94.59.230:8086/delete`,'DELETE',body),
 
+        //Microservicio de Empleos
 
         inputEmpleo:(_,{body}) =>
         generalRequest(`http://34.94.59.230:8001/empleos/`,'POST',body),

@@ -14,9 +14,10 @@ const typeDefs=`
         getCategorias:[Categoria]
         getPostulaciones:[Postulacion]
         getClasEmpleo:[ClasEmpleo]
-
-
-
+        getMisEmpleosPublicados(ofertante_id: String): [Empleo]
+        getMisEmpleosAplicados(postulante_id: String): [Empleo]
+        getEmpleosByCategoria(nombre_categoria: String): [Empleo]
+        getEmpleo(id: Int): Empleo
 
 
 
@@ -25,36 +26,18 @@ const typeDefs=`
         getUsuarioByEmail(body: inputUsuarioByEmail):user
         getOrgUsuario(id:Int):Organizacion
         getOrganizaciones:[Organizacion]
-
-
-
-        
         Foros:[Foro]
-        
         findForo(id:Int):Foro
-
         findForoCreador(creador:Int):[Foro]
-
-
         Messages: [Message]
         FindMessajes(id1:String,id2:String):[Message]
-
-
-
-
-
-
-
-
-
         Relaciones:[Relacion]
         RelacionU(id:String):[Relacion]
     }
-    type Mutation{
 
+    type Mutation{
         Register(body: inputRegister):resRegister
         DeleteUser(body: inputDelUser):String
-
 
         inputEmpleo(body: InputEmpleo):Empleo
         inputUsuarioEmpleo(body:InputUsuarioEmpleo):UsuarioEmpleo
@@ -62,19 +45,15 @@ const typeDefs=`
         inputPostulacion(body:InputPostulacion):Postulacion
         inputClasEmpleo(body:InputClasEmpleo):ClasEmpleo
 
-
         editEmpleo(id:Int,body:InputEmpleo): Empleo
         editCategoria(id:Int, body:InputCategoria):Categoria
         editClasEmpleo(id:Int, body:InputClasEmpleo):ClasEmpleo
-
 
         delUsuarioEm(id: String):String
         delEmpleo(id: Int):String
         delCategoria(id: Int):String
         delPostulacion(id: Int):String
         delClasEmpleo(id: Int):String
-
-
 
         inputForo(body: inputForo):Foro
         inputCategoriaForo(body: inputCategoria): categoriaForo
@@ -95,17 +74,9 @@ const typeDefs=`
         actOrganizacion(id:Int, body: inputOrganizacion):Organizacion
         delOrganizacion(id:Int): org
 
-
-
         SendMessage(input:InputMessage): Message
         deleteMensaje(idmensaje:String):Message
         deleteMensajes(id1:String,id2:String):Message
-
-
-
-
-
-
 
         InRelacion(input:InputRelacion): Relacion
         addfriend(id1:String,id2:String):Relacion
@@ -304,9 +275,9 @@ const typeDefs=`
         titulo: String,
         descripcion: String,
         fechaVencimiento:String,
-        id_ofertante:String
+        id_ofertante:String,
+        categoria: String
     }
-
 
     type Empleo{
         id: Int,
@@ -314,7 +285,8 @@ const typeDefs=`
         descripcion: String,
         fechaPublicacion:String,
         fechaVencimiento:String,
-        id_ofertante:String
+        id_ofertante:String,
+        categoria: String
     }
 
     type UsuarioEmpleo{
