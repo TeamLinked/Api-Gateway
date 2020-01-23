@@ -15,7 +15,7 @@ const typeDefs=`
         getPostulaciones:[Postulacion]
         getClasEmpleo:[ClasEmpleo]
         getMisEmpleosPublicados(ofertante_id: String): [Empleo]
-        getMisEmpleosAplicados(postulante_id: String): [Empleo]
+        getMisEmpleosAplicados(postulante_id: String): [EmpleoPos]
         getEmpleosByCategoria(nombre_categoria: String): [Empleo]
         getEmpleo(id: Int): Empleo
 
@@ -279,6 +279,13 @@ const typeDefs=`
         categoria: String
     }
 
+    type EmpleoPos{
+        id: Int,
+        id_postulante: String,
+        id_empleo: Empleo
+        fechaAplicacion: String
+    }
+
     type Empleo{
         id: Int,
         titulo: String,
@@ -354,10 +361,10 @@ const typeDefs=`
     }
 
     type Postulacion{
-        id: Int
+        id: Int,
+        id_postulante: String,
+        id_empleo: Empleo
         fechaAplicacion: String
-        id_postulante: String
-        id_empleo: Int
     }
 
     input InputPostulacion{

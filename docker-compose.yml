@@ -5,3 +5,5 @@ services:
     image: adchavesm:API
     ports:
       - 3050:3050
+    labels:
+      io.rancher.scheduler.global: 'true'
