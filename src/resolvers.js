@@ -64,9 +64,9 @@ export const resolvers={
         generalRequest(`http://35.235.64.211:3021/find/${id1}/${id2}`, 'GET'),
 
         //microservicio de MiREd
-        Relaciones: () => getRequest('http://35.236.126.83:3011',''),
+        Relaciones: () => getRequest('http://35.236.27.232:3011',''),
 
-        RelacionU:(_,{id})=> generalRequest(`http://35.236.126.83:3011/edit/${id}`,'GET')        
+        RelacionU:(_,{id})=> generalRequest(`http://35.236.27.232:3011/edit/${id}`,'GET')        
     },
     Mutation:{  
         
